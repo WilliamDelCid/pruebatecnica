@@ -1,6 +1,7 @@
 # Prueba Tecnica
 
 * Inicialmente debe tener Oracle 19C+ (El backup de la base va dentro del repositorio).
+* Al usar oracle debe crear un nuevo esquema con un usuario Prueba y la contraseña Root1234 y se restaura la base.
 * Luego clonamos el repositorio en una carpeta que se podra ejecutar con Eclipse o IntelliJ IDEA
 * Nos vamos al pom.xml para actualizar las dependecias.
 * Configuramos el servidor Local con JBoss para ejecutar el proyecto.
