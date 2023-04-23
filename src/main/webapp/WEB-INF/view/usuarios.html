@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="webjars/bootstrap/5.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <title>Menu práctica Thymeleaf</title>
+
+</head>
+<body>
+
+
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark" style="min-height: 100vh">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto
+text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Práctica Thymeleaf</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item"><a th:href="@{practicaMensajes}"
+                                            class="nav-link align-middle px-0"> <i class="fs-4 bi-chat"></i>
+                        <span class="ms-1 d-none d-sm-inline">Mensajes</span>
+                    </a></li>
+                    <li><a id="MnEstudiante" th:href="@{condiciones}"
+                           class="nav-link px-0 align-middle">
+                        <i class="fs-4 bi-people"></i>
+                        <span class="ms-1 d-none d-sm-inline">Condición</span></a>
+                    </li>
+                    <li><a id="MnCarros" th:href="@{carros}"
+                           class="nav-link px-0 align-middle">
+                        <i class="fs-4 bi-people"></i>
+                        <span class="ms-1 d-none d-sm-inline">Carros</span></a>
+                    </li>
+                </ul>
+                <hr>
+            </div>
+        </div>
+
+        <div class="d-grid mb-3 container">
+            <div>
+                <table id="tablita" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Password</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="usuario:${listaUsuarios}">
+                        <td id="codigo" th:text="${usuario.idUser}"></td>
+                        <td th:text="${usuario.user}"></td>
+                        <td th:text="${usuario.password}"></td>
+                        <td>
+                            <a class="btn btn-primary editButton"  th:href="@{/editar/(id=${usuario.idUser})}"  >Editar</a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
+                                Agregar
+                            </button>
+                            <a class="btn btn-danger" th:href="@{/eliminar/{id}(id=${usuario.idUser})}">Eliminar</a></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="webjars/bootstrap/5.0.2/js/bootstrap.min.js"></script>
+<script>
+        document.getElementById('tablita').addEventListener('click',(e)=>{
+            if (e.target.classList.contains('editButton')){
+                e.preventDefault();
+                let href = e.target.getAttribute('href');
+                fetch(href)
+                    .then(function(response) {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Error en la respuesta de la solicitud.');
+                        }
+                    })
+                    .then(function(usuarios) {
+                        document.getElementById('idUserEdit').value = usuarios.idUser;
+                        document.getElementById('userEdit').value = usuarios.user;
+                        document.getElementById('passwordEdit').value = usuarios.password;
+                    })
+                    .catch(function(error) {
+                        console.error('Error en la solicitud:', error);
+                    });
+
+                document.getElementById('editarModal').classList.add('show');
+                document.getElementById('editarModal').classList.add('d-block');
+            }
+        })
+</script>
+</body>
+</html>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/agregar}" method="POST" >
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="idUser" id="idUser" >
+                    <input type="text" name="user" id="user">
+                    <input type="text" name="password" id="password">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <div>
+                        <input type="submit" class="btn btn-primary" name="registrar" value="Registrar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/editar}" method="PUT" >
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" >Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="idUserEdit" id="idUserEdit" >
+                    <input type="text" name="userEdit" id="userEdit">
+                    <input type="text" name="passwordEdit" id="passwordEdit">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <div>
+                        <input type="submit" class="btn btn-primary" name="registrar" value="Registrar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
