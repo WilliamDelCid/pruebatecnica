@@ -8,14 +8,101 @@
   <name>PruebaTecnica Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+    <!--
+       https://mvnrepository.com/artifact/org.springframework/spring-core
+       -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>5.3.13</version>
+    </dependency>
+    <!--
+   https://mvnrepository.com/artifact/org.springframework/springcontext -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.3.13</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>0.4</version>
+    </dependency>
+
+    <!--
+   https://mvnrepository.com/artifact/org.springframework/springaspects -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aspects</artifactId>
+      <version>5.3.13</version>
+    </dependency>
+    <!--     https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>5.3.13</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servletapi -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/springwebmvc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.2.7.RELEASE</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleafspring5 -->
+    <dependency>
+      <groupId>org.thymeleaf</groupId>
+      <artifactId>thymeleaf-spring5</artifactId>
+      <version>3.0.11.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-java8time</artifactId>
+      <version>3.0.4.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+      <version>5.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle.database.jdbc</groupId>
+      <artifactId>ojdbc10</artifactId>
+      <version>19.3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>4.3.10.RELEASE</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>4.3.10.RELEASE</version>
     </dependency>
   </dependencies>
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
     <finalName>PruebaTecnica</finalName>
   </build>
 </project>
