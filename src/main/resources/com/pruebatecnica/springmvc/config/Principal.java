@@ -4,9 +4,9 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
+import java.util.Collections;
+import java.util.EnumSet;
 
 public class Principal implements WebApplicationInitializer {
 
@@ -17,6 +17,9 @@ public class Principal implements WebApplicationInitializer {
         contexto.setServletContext(servletContext);
         ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(contexto));
         servlet.setLoadOnStartup(1);
+        servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+        SessionCookieConfig sessionCookieConfig=servletContext.getSessionCookieConfig();
+        sessionCookieConfig.setHttpOnly(true);
         servlet.addMapping("/");
 
     }

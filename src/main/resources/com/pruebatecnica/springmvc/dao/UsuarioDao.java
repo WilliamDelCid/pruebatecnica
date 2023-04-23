@@ -10,4 +10,6 @@ public interface UsuarioDao {
     public Usuarios obtener(Integer id);
     public int eliminar(Integer id);
     public List<Usuarios> list();
+    public Usuarios obtenerUser(String name);
+
 }

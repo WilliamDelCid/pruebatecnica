@@ -20,13 +20,13 @@ public class UsuarioDAOI implements UsuarioDao{
 
     @Override
     public int guardar(Usuarios usuarios) {
-        String sql = "INSERT INTO \"usuarios\" (\"user\", \"password\") VALUES (?, ?) ";
-        return jdbcTemplate.update(sql,usuarios.getUser(),usuarios.getPassword());
+        String sql = "INSERT INTO \"usuarios\" (\"user\", \"password\",\"rol\") VALUES (?, ?,?) ";
+        return jdbcTemplate.update(sql,usuarios.getUser(),usuarios.getPassword(),usuarios.getRol());
     }
     @Override
     public int actualizar(Usuarios usuarios) {
-       String sql = "UPDATE \"usuarios\" SET \"user\" = ?, \"password\" = ? WHERE \"idUser\" = ? ";
-       return jdbcTemplate.update(sql,usuarios.getUser(),usuarios.getPassword(),usuarios.getIdUser());
+       String sql = "UPDATE \"usuarios\" SET \"user\" = ?, \"password\" = ?,\"rol\"=? WHERE \"idUser\" = ? ";
+       return jdbcTemplate.update(sql,usuarios.getUser(),usuarios.getPassword(),usuarios.getRol(),usuarios.getIdUser());
     }
     @Override
     public Usuarios obtener(Integer id) {
@@ -37,7 +37,8 @@ public class UsuarioDAOI implements UsuarioDao{
                 if (resultSet.next()){
                     String user = resultSet.getString("user");
                     String password = resultSet.getString("password");
-                    return new Usuarios(id,user,password);
+                    String rol = resultSet.getString("rol");
+                    return new Usuarios(id,user,password,rol);
                 }
                 return null;
             }
@@ -61,10 +62,29 @@ public class UsuarioDAOI implements UsuarioDao{
                 int id = resultSet.getInt("idUser");
                 String user = resultSet.getString("user");
                 String password = resultSet.getString("password");
-                return new Usuarios(id,user,password);
+                String rol = resultSet.getString("rol");
+                return new Usuarios(id,user,password,rol);
             }
         };
         return jdbcTemplate.query(sql,rowMapper);
 
+    }
+    @Override
+    public Usuarios obtenerUser(String name) {
+        String sql = "SELECT * FROM \"usuarios\" WHERE \"user\"='" + name + "'";
+
+        ResultSetExtractor<Usuarios> extractor = new ResultSetExtractor<Usuarios>() {
+            @Override
+            public Usuarios extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+                if (resultSet.next()){
+                    String user = resultSet.getString("user");
+                    String password = resultSet.getString("password");
+                    String rol = resultSet.getString("rol");
+                    return new Usuarios(user,password,rol);
+                }
+                return null;
+            }
+        };
+        return jdbcTemplate.query(sql,extractor);
     }
 }

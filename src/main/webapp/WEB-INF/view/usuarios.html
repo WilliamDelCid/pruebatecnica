@@ -2,55 +2,50 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Usuarios</title>
     <link rel="stylesheet" href="webjars/bootstrap/5.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
-    <title>Menu práctica Thymeleaf</title>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 <body>
 
-
-
 <div class="container-fluid">
     <div class="row flex-nowrap">
-
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark" style="min-height: 100vh">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto
-text-white text-decoration-none">
-                    <span class="fs-5 d-none d-sm-inline">Práctica Thymeleaf</span>
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li class="nav-item"><a th:href="@{practicaMensajes}"
-                                            class="nav-link align-middle px-0"> <i class="fs-4 bi-chat"></i>
-                        <span class="ms-1 d-none d-sm-inline">Mensajes</span>
-                    </a></li>
-                    <li><a id="MnEstudiante" th:href="@{condiciones}"
+
+                    <li><a id="MnCarros" th:href="@{usuario}"
                            class="nav-link px-0 align-middle">
                         <i class="fs-4 bi-people"></i>
-                        <span class="ms-1 d-none d-sm-inline">Condición</span></a>
+                        <span class="ms-1 d-none d-sm-inline">Usuarios</span></a>
                     </li>
-                    <li><a id="MnCarros" th:href="@{carros}"
+
+                    <li><a id="MnLogin" th:href="@{/}"
                            class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-people"></i>
-                        <span class="ms-1 d-none d-sm-inline">Carros</span></a>
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span class="ms-1 d-none d-sm-inline">Salir de la Session</span></a>
                     </li>
+
                 </ul>
                 <hr>
             </div>
         </div>
 
-        <div class="d-grid mb-3 container">
+        <div class="d-grid mb-3 container" style="flex-shrink:unset">
             <div>
-                <table id="tablita" class="table table-striped">
+                <h1>Usuarios</h1>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
+                    Agregar
+                </button>
+                <table id="tablaUsuarios" class="table table-striped">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Usuario</th>
-                        <th>Password</th>
+                        <th>Rol</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
@@ -58,13 +53,9 @@ text-white text-decoration-none">
                     <tr th:each="usuario:${listaUsuarios}">
                         <td id="codigo" th:text="${usuario.idUser}"></td>
                         <td th:text="${usuario.user}"></td>
-                        <td th:text="${usuario.password}"></td>
+                        <td th:text="${usuario.rol}"></td>
                         <td>
-                            <a class="btn btn-primary editButton"  th:href="@{/editar/(id=${usuario.idUser})}"  >Editar</a>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
-                                Agregar
-                            </button>
+                            <a class="btn btn-primary editButton" data-bs-toggle="modal" data-bs-target="#editarModal" th:href="@{/editar/(id=${usuario.idUser})}"  >Editar</a>
                             <a class="btn btn-danger" th:href="@{/eliminar/{id}(id=${usuario.idUser})}">Eliminar</a></td>
 
                     </tr>
@@ -75,10 +66,10 @@ text-white text-decoration-none">
 
     </div>
 </div>
-
 <script src="webjars/bootstrap/5.0.2/js/bootstrap.min.js"></script>
 <script>
-        document.getElementById('tablita').addEventListener('click',(e)=>{
+
+        document.getElementById('tablaUsuarios').addEventListener('click',(e)=>{
             if (e.target.classList.contains('editButton')){
                 e.preventDefault();
                 let href = e.target.getAttribute('href');
@@ -93,38 +84,50 @@ text-white text-decoration-none">
                     .then(function(usuarios) {
                         document.getElementById('idUserEdit').value = usuarios.idUser;
                         document.getElementById('userEdit').value = usuarios.user;
-                        document.getElementById('passwordEdit').value = usuarios.password;
+                        // document.getElementById('passwordEdit').value = usuarios.password;
+                        document.getElementById('rolEdita').value = usuarios.rol;
                     })
                     .catch(function(error) {
                         console.error('Error en la solicitud:', error);
                     });
 
-                document.getElementById('editarModal').classList.add('show');
-                document.getElementById('editarModal').classList.add('d-block');
             }
         })
 </script>
 </body>
 </html>
 
-
-
 <!-- Modal -->
 <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form th:action="@{/agregar}" method="POST" >
 
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="idUser" id="idUser" >
-                    <input type="text" name="user" id="user">
-                    <input type="text" name="password" id="password">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="user">Ingrese un nombre de Usuario.</label>
+                            <input type="text" class="form-control"  name="user" id="user" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="user">Ingrese una Contraseña.</label>
+                            <input type="password" class="form-control" name="password" id="password" required>
+                        </div>
+                    </div>
+                   <div class="row">
+                       <div class="form-group col-md-6">
+                           <label for="user">Ingrese un Rol.</label>
+                               <select name="rol" id="rol" class="form-select" aria-label="Default select example" required>
+                               <option value="Administrador">Administrador</option>
+                               <option value="Pasante">Pasante</option>
+                           </select>
+                       </div>
+                   </div>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <div>
@@ -139,24 +142,43 @@ text-white text-decoration-none">
 
 
 <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form th:action="@{/editar}" method="PUT" >
+    <form th:action="@{/editar}" method="POST" >
 
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" >Modal title</h5>
+                    <h5 class="modal-title" >Editar Usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="idUserEdit" id="idUserEdit" >
-                    <input type="text" name="userEdit" id="userEdit">
-                    <input type="text" name="passwordEdit" id="passwordEdit">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="user">Ingrese un nombre de Usuario.</label>
+                            <input type="text" class="form-control"  name="user" id="userEdit" required >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="passwordEdit">Ingrese una Contraseña.</label>
+                            <input type="password" class="form-control" name="password" id="passwordEdit" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="user">Ingrese un Rol.</label>
+                            <select name="rol" id="rolEdita" class="form-select" aria-label="Default select example" required>
+                                <option value="Administrador">Administrador</option>
+                                <option value="Pasante">Pasante</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+<!--                            <label for="idUserEdit">ID del Usuario</label>-->
+                            <input  type="hidden" class="form-control" name="idUser" id="idUserEdit" readonly>
+                        </div>
+                    </div>
                 </div>
-
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
                     <div>
-                        <input type="submit" class="btn btn-primary" name="registrar" value="Registrar">
+                        <input type="submit" class="btn btn-primary" name="EditarRegistro" value="EditarRegistro">
                     </div>
                 </div>
             </div>

@@ -1,23 +1,32 @@
 package com.pruebatecnica.springmvc.model;
 
 public class Usuarios {
-    private int idUser;
+    private Integer idUser;
     private String user;
     private String password;
+    private String rol;
 
     public Usuarios() {
     }
-    public Usuarios(int idUser, String user, String password) {
+
+    public Usuarios(String user, String password, String rol) {
+        this.user = user;
+        this.password = password;
+        this.rol = rol;
+    }
+
+    public Usuarios(Integer idUser, String user, String password, String rol) {
         this.idUser = idUser;
         this.user = user;
         this.password = password;
+        this.rol = rol;
     }
 
-    public int getIdUser() {
+    public Integer getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
 
@@ -31,6 +40,14 @@ public class Usuarios {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public void setPassword(String password) {

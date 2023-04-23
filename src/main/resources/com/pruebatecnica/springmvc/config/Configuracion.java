@@ -24,7 +24,9 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import javax.servlet.*;
 import javax.sql.DataSource;
+import java.util.Collections;
 
 @Configuration
 @ComponentScan("com.pruebatecnica.springmvc")
@@ -61,6 +63,7 @@ public class Configuracion implements WebMvcConfigurer, ApplicationContextAware 
         return resolver;
     }
 
+
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
@@ -85,6 +88,7 @@ public class Configuracion implements WebMvcConfigurer, ApplicationContextAware 
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
+
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -98,5 +102,7 @@ public class Configuracion implements WebMvcConfigurer, ApplicationContextAware 
     public UsuarioDao getUsuarioDAO() {
         return new UsuarioDAOI(getDataSource());
     }
+
+
 
 }
